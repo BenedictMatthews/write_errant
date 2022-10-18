@@ -17,8 +17,6 @@ const app = express();
 icloud.apple_id = process.env.ICLOUD_USER;
 icloud.password = process.env.ICLOUD_PASSWORD;
 
-var device;
-
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
@@ -46,33 +44,40 @@ app.get('*', (req, res) => {
   });
 
 // Run this on the hour between 7am and 4pm (London time)
-nodeCron.schedule('* * 7-16 * * *', () => {
+nodeCron.schedule('0 0 7-16 * * *', function() {
+        console.log('Fetching location');
+
         icloud.getDevices(function(error, devices) {
+
+            var device;
 
             if (error) {
                 throw error;
             }
 
-            console.log(devices);
-
-            // Get the specific device we wantreact
-            device = devices.find(d => {
-                return d.id == process.env.DEVICE_ID
-            });
-
-            if (device.location) {
-                // Create a Mongo model of the location of the device
-                const location = new Location({
-                    longitude: device.location.longitude,
-                    latitude: device.location.latitude
+            // Get the specific device we want
+            if (devices) {
+                device = devices.find(d => {
+                    return d.id == process.env.DEVICE_ID
                 });
 
-                // Save to the database
-                location.save()
-                        .then((result) => console.log('location saved'))
-                        .catch((err) => console.log(err));
+                if (device.location) {
+                    console.log('Device and location found')
+                    // Create a Mongo model of the location of the device
+                    const location = new Location({
+                        longitude: device.location.longitude,
+                        latitude: device.location.latitude
+                    });
+
+                    // Save to the database
+                    location.save()
+                            .then(console.log('Location saved'))
+                            .catch((err) => console.log(err));
+                } else {
+                    console.log('Device location not available')
+                } 
             } else {
-                console.log('Device location not available')
+                console.log('No devices found')
             }
 
         });
