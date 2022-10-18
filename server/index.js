@@ -63,8 +63,8 @@ nodeCron.schedule('0 0 7-16 * * *', function() {
                     console.log('Device and location found')
                     // Create a Mongo model of the location of the device
                     const location = new Location({
-                        longitude: device.location.longitude,
-                        latitude: device.location.latitude
+                        latitude: device.location.latitude,
+                        longitude: device.location.longitude
                     });
 
                     // Save to the database

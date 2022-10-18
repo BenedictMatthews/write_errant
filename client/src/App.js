@@ -9,8 +9,8 @@ function App() {
 
   const {isLoaded} = useJsApiLoader({ googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY})
   const [map, setMap] = useState(/**@type google.maps.Map*/ (null))
-  const [longitude, setLongitude] = useState(null)
   const [latitude, setLatitude] = useState(null)
+  const [longitude, setLongitude] = useState(null)
   const center = { lat:54.00, lng: -3.00 }
   const google = window.google;
 
@@ -22,8 +22,8 @@ function App() {
         try {
             const response = await fetch("/current-location");
             const json = await response.json();
-            setLongitude(json.longitude + r * Math.cos(theta));
             setLatitude(json.latitude  + r * Math.sin(theta));
+            setLongitude(json.longitude + r * Math.cos(theta));
         } catch (error) {
             console.log(error);
         }
