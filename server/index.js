@@ -2,17 +2,15 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const nodeCron = require('node-cron');
-const Location = require('./models/location')
+const Location = require('./models/location');
 var icloud = require('find-my-iphone').findmyphone;
 
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
   }
 
-var dburl = process.env.DATABASE;
-
-const PORT = process.env.PORT || 3001;
 const app = express();
+const PORT = process.env.PORT || 3001;
 
 icloud.apple_id = process.env.ICLOUD_USER;
 icloud.password = process.env.ICLOUD_PASSWORD;
@@ -21,9 +19,9 @@ icloud.password = process.env.ICLOUD_PASSWORD;
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 // Connect to the database
-mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true })
         .then((result) => app.listen(PORT, () => {
-            console.log('Connected to database ' + dburl + `. Server listening on ${PORT}`);
+            console.log(`Connected to database. Server listening on ${PORT}`);
           }))
         .catch((err) => console.log(err));
 

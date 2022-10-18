@@ -2,7 +2,7 @@ import './App.css';
 import React, { useState, useEffect } from "react";
 import {useJsApiLoader, GoogleMap, MarkerF} from "@react-google-maps/api";
 import { ChakraProvider, Box, IconButton, Flex, Link, VStack } from "@chakra-ui/react";
-import { FaLocationArrow, FaInstagram, FaSquareRootAlt } from 'react-icons/fa';
+import { FaLocationArrow, FaInstagram } from 'react-icons/fa';
 import { BiDonateHeart } from 'react-icons/bi';
 
 function App() {
@@ -25,7 +25,7 @@ function App() {
             setLongitude(json.longitude + r * Math.cos(theta));
             setLatitude(json.latitude  + r * Math.sin(theta));
         } catch (error) {
-            console.log("error", error);
+            console.log(error);
         }
     };
 
