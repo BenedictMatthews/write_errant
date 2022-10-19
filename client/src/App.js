@@ -14,16 +14,14 @@ function App() {
   const center = { lat:54.00, lng: -3.00 }
   const google = window.google;
 
-  // Fetch the latest location from the back-end and pick a random location within 1km
+  // Fetch the latest location from the back-end
   useEffect(() => {
-    const r = 0.01 * Math.sqrt(Math.random())
-    const theta = Math.random() * 2 * Math.PI
     const fetchData = async () => {
         try {
             const response = await fetch("/current-location");
             const json = await response.json();
-            setLatitude(json.latitude  + r * Math.sin(theta));
-            setLongitude(json.longitude + r * Math.cos(theta));
+            setLatitude(json.latitude);
+            setLongitude(json.longitude);
         } catch (error) {
             console.log(error);
         }
